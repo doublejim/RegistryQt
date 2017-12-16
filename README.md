@@ -20,7 +20,7 @@ How to get started:<br>
 • I am not certain that all errors are handled correctly.<br>
 • Some functions and variables should probably be renamed.<br>
 • Maybe I want a RegOperation struct that contains information on an attempted operation.<br>
-• Make sure that it also compiles and works on Windows XP.<br>
+• Make sure that it compiles and works on Windows XP, Windows 7, Windows 8.1, Windows 10.<br>
 • I want "keyExists()" and "valueExists()" functions.<br>
 • I want to be able to get a list of all valueNames in a key.<br>
 
