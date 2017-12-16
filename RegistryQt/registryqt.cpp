@@ -135,7 +135,7 @@ RegValue RegistryQt::getValue( HKEY rootKey, QString directory, QString valueNam
 
         switch(retCode)
         {
-        case ERROR_MORE_DATA:           // The 256 bytes aren't enough. Allocate the necessary amount.
+        case ERROR_MORE_DATA:           // The 255 bytes aren't enough. Allocate the necessary amount.
         {
             delete data;
             data = new BYTE[cbData];

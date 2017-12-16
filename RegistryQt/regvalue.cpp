@@ -62,7 +62,6 @@ DWORD RegValue::toDword()
 
 QWORD RegValue::toQword()
 {
-
     QWORD result = 0;
 
     result |= data[0];
@@ -74,11 +73,7 @@ QWORD RegValue::toQword()
     result |= (QWORD) data[6] << 48;
     result |= (QWORD) data[7] << 56;
 
-    //return (data[0]) | (data[1] << 8) | (data[2] << 16) | (data[3] << 24) | (data[4] << 32) | (data[5] << 40) | (data[6] << 48);
-
-    //return (data[0]) | (data[1] << 8) | (data[2] << 16) | (data[3] << 24) | (data[4] << 32) | (data[5] << 40) | (data[6] << 48);
-
-    return result;
+    return qFromLittleEndian(result);
 }
 
 QByteArray RegValue::toByteArray()
