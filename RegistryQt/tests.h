@@ -39,7 +39,7 @@ static void RunTests()
     {
         QString description = "Binary to registry and back.";
 
-        QImage img (75,72, QImage::Format_RGBA8888);
+        QImage img (75,75, QImage::Format_RGBA8888);
         img.fill(Qt::red);
 
         QByteArray bytes;

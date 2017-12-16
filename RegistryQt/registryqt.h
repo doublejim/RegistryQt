@@ -24,6 +24,7 @@ public:
     RegistryQt();
     QStringList getSubkeys(HKEY rootKey, QString directory);
     RegValue getValue(HKEY rootKey, QString directory, QString valueName);
+    // getValueNames
     // bool keyExists()
     // bool valueExists()
 
