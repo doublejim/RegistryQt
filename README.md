@@ -1,7 +1,6 @@
 # RegistryQt
-Easily use the Windows Registry with Qt.
 This library allows you to perform several Windows Registry operations.<br>
-You can write QString and QStringList directly to the Registry.
+You can use these functions with QString and other typical Qt data types as arguments.
 
 How to get started:<br>
 • Add the 4 files: *registryqt.cpp, registryqt.h, regvalue.cpp, regvalue.h* to your project.<br>
