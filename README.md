@@ -17,19 +17,18 @@ How to get started:<br>
 
 ## THINGS IN THE WORKS ##
 • I am not certain that all errors are handled correctly.<br>
-• Some functions and variables should probably be renamed.<br>
+• ~~Some functions and variables should probably be renamed.~~ it's looking pretty snazzy now<br>
 • Maybe I want a RegOperation struct that contains information on an attempted operation.<br>
 • Make sure that it compiles and works on Windows XP, Windows 7, Windows 8.1, Windows 10.<br>
-• I want "keyExists()" and "valueExists()" functions.<br>
-• I want to be able to get a list of all valueNames in a key.<br>
+• ~~I want "keyExists()" and "valueExists()" functions.~~ done<br>
+• ~~I want to be able to get a list of all valueNames in a key.~~ done<br>
 
 ## Example 1: Write/Read a string ##
 ```c++
-RegistryQt registry;
 QString value = "value";
-registry.insertValueSZ( HKEY_LOCAL_MACHINE, "Software\\1337-test", "hello there", value);
-RegValue regValue = registry.getValue( HKEY_LOCAL_MACHINE, "Software\\1337-test", "hello there");
-qDebug() << regValue.toString();
+RegistryQt::insertValueSZ( HKEY_LOCAL_MACHINE, "Software\\1337-test", "hello there", value);
+RegValue regValue = RegistryQt::getValue( HKEY_LOCAL_MACHINE, "Software\\1337-test", "hello there");
+qDebug() << RegistryQt::toString();
 ```
 ### Result ###
 
@@ -37,12 +36,11 @@ Qt prints out: "value" to the console.
 
 ## Example 2: Write/Read a string list ##
 ```c++
-RegistryQt registry;
 QStringList list;
 list << "first list item" << "second list item" << "third list item";
-registry.insertValueMultiSZ( HKEY_LOCAL_MACHINE, "Software\\1337-test", "cool, a list", list);
-RegValue regValue = registry.getValue( HKEY_LOCAL_MACHINE, "Software\\1337-test", "cool, a list");
-qDebug() << regValue.toStringList();
+RegistryQt::insertValueMultiSZ( HKEY_LOCAL_MACHINE, "Software\\1337-test", "cool, a list", list);
+RegValue regValue = RegistryQt::getValue( HKEY_LOCAL_MACHINE, "Software\\1337-test", "cool, a list");
+qDebug() << RegistryQt::toStringList();
 ```
 ### Result ###
 
@@ -58,9 +56,8 @@ QBuffer buffer(&bytes);
 buffer.open(QIODevice::WriteOnly);
 img.save(&buffer, "PNG");
 
-RegistryQt registry;
-registry.insertValueBinary( HKEY_LOCAL_MACHINE, "Software\\1337-test", "great", bytes);
-RegValue value = registry.getValue( HKEY_LOCAL_MACHINE, "Software\\1337-test", "great");
+RegistryQt::insertValueBinary( HKEY_LOCAL_MACHINE, "Software\\1337-test", "great", bytes);
+RegValue value = RegistryQt::getValue( HKEY_LOCAL_MACHINE, "Software\\1337-test", "great");
 QByteArray bytes2 = value.toByteArray();
 qDebug() << (bytes == bytes2);
 ```
@@ -70,9 +67,8 @@ bytes2 now contains the data of bytes. So Qt prints out: true.
 
 ## Example 4: Write/Read DWORD ##
 ```c++
-RegistryQt registry;
-registry.insertValueDWORD( HKEY_LOCAL_MACHINE, "Software\\1337-test", "word", 56456);
-RegValue regValue = registry.getValue( HKEY_LOCAL_MACHINE, "Software\\1337-test", "word");
+RegistryQt::insertValueDWORD( HKEY_LOCAL_MACHINE, "Software\\1337-test", "word", 56456);
+RegValue regValue = RegistryQt::getValue( HKEY_LOCAL_MACHINE, "Software\\1337-test", "word");
 qDebug() << (regValue.type == REG_DWORD);
 qDebug() << regValue.toDword();
 ```
