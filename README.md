@@ -28,7 +28,7 @@ How to get started:<br>
 QString value = "value";
 RegistryQt::insertValueSZ( HKEY_LOCAL_MACHINE, "Software\\1337-test", "hello there", value);
 RegValue regValue = RegistryQt::getValue( HKEY_LOCAL_MACHINE, "Software\\1337-test", "hello there");
-qDebug() << RegistryQt::toString();
+qDebug() << regValue.toString();
 ```
 ### Result ###
 
@@ -40,7 +40,7 @@ QStringList list;
 list << "first list item" << "second list item" << "third list item";
 RegistryQt::insertValueMultiSZ( HKEY_LOCAL_MACHINE, "Software\\1337-test", "cool, a list", list);
 RegValue regValue = RegistryQt::getValue( HKEY_LOCAL_MACHINE, "Software\\1337-test", "cool, a list");
-qDebug() << RegistryQt::toStringList();
+qDebug() << regValue.toStringList();
 ```
 ### Result ###
 
