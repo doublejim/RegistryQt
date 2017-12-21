@@ -18,26 +18,25 @@ typedef unsigned __int64 QWORD;     // DEFINE QWORD
 #include <QDebug>
 #include <QStringList>
 
-class RegistryQt
+namespace RegistryQt
 {
-public:
-    RegistryQt();
-    QStringList getSubkeys(HKEY rootKey, QString directory);
-    RegValue getValue(HKEY rootKey, QString directory, QString valueName);
-    // getValueNames
-    // bool keyExists()
-    // bool valueExists()
+    // Retrieve data
+    extern QStringList subkeys(const HKEY rootKey, const QString subkey);
+    extern RegValue value(const HKEY rootKey, const QString subkey, const QString valueName);
+    extern QStringList valueNames(const HKEY rootKey, const QString subkey);
+    extern bool valueExists(const HKEY rootKey, const QString subkey, const QString valueName);
+    extern bool keyExists(const HKEY rootKey, const QString subkey);
 
-    bool insertKey(const HKEY rootKey, const QString directory);
-    bool insertValue(HKEY rootKey, QString directory, QString valueName, const BYTE *value, DWORD valueType, int sizeOfValue);
-    bool insertValueBinary(const HKEY rootKey, const QString directory, const QString valueName, const QByteArray &value);
-    bool insertValueDWORD(const HKEY rootKey, const QString directory, const QString valueName, const DWORD &value);
-    bool insertValueExpandSZ(const HKEY rootKey, const QString directory, const QString valueName, const QString &value);
-    bool insertValueMultiSZ(const HKEY rootKey, const QString directory, const QString valueName, const QStringList &value);
-    bool insertValueQWORD(const HKEY rootKey, const QString directory, const QString valueName, const QWORD &value);
-    bool insertValueSZ(const HKEY rootKey, const QString directory, const QString valueName, const QString &value);
-
-    void removeKey(HKEY rootKey, QString directory);
-};
+    // Modify registry
+    extern bool insertKey(const HKEY rootKey, const QString subkey);
+    extern bool insertValue(const HKEY rootKey, const QString subkey, const QString valueName, const BYTE *value, const DWORD valueType, const int sizeOfValue);
+    extern bool insertValueBinary(const HKEY rootKey, const QString subkey, const QString valueName, const QByteArray &value);
+    extern bool insertValueDWORD(const HKEY rootKey, const QString subkey, const QString valueName, const DWORD &value);
+    extern bool insertValueExpandSZ(const HKEY rootKey, const QString subkey, const QString valueName, const QString &value);
+    extern bool insertValueMultiSZ(const HKEY rootKey, const QString subkey, const QString valueName, const QStringList &value);
+    extern bool insertValueQWORD(const HKEY rootKey, const QString subkey, const QString valueName, const QWORD &value);
+    extern bool insertValueSZ(const HKEY rootKey, const QString subkey, const QString valueName, const QString &value);
+    extern void removeKey(const HKEY rootKey, const QString subkey);
+}
 
 #endif // REGISTRYQT_H

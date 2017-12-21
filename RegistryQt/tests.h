@@ -29,13 +29,12 @@ static bool check( int& okay, int& fail, QString& description, bool value, bool 
 
 static void RunTests()
 {
-    RegistryQt registry;
-
     int tests_fail = 0;
     int tests_okay = 0;
 
-    QString keysRoot = "SOFTWARE\\___0TESTA___\\";          // <= THIS IS THE ROOT KEY OF ALL TESTS BEING RUN.
-
+    QString TestSubkey = "SOFTWARE\\___0TESTA___\\";          // <= THIS IS THE ROOT KEY OF ALL TESTS BEING RUN.
+                                                              //    SET IT TO SOMETHING UNIQUE. IT WILL BE DELETED
+                                                              //    IN THE END.
     {
         QString description = "Binary to registry and back.";
 
@@ -47,8 +46,8 @@ static void RunTests()
         buffer.open(QIODevice::WriteOnly);
         img.save(&buffer, "PNG");
 
-        bool okay = registry.insertValueBinary( HKEY_LOCAL_MACHINE, keysRoot, "great", bytes);
-        RegValue value = registry.getValue( HKEY_LOCAL_MACHINE, keysRoot, "great");
+        bool okay = RegistryQt::insertValueBinary( HKEY_LOCAL_MACHINE, TestSubkey, "great", bytes);
+        RegValue value = RegistryQt::value( HKEY_LOCAL_MACHINE, TestSubkey, "great");
 
         check( tests_okay, tests_fail, description, (bytes == value.toByteArray()), okay);
     }
@@ -58,8 +57,8 @@ static void RunTests()
 
         QStringList list;
         list << "hello" << "born" << "æ测试å" << "in" << "the" << "usa" << "æ测试å";
-        bool okay = registry.insertValueMultiSZ( HKEY_LOCAL_MACHINE, keysRoot + "Børachio\\测试", "øresund测试", list);
-        RegValue value = registry.getValue( HKEY_LOCAL_MACHINE, keysRoot + "Børachio\\测试", "øresund测试");
+        bool okay = RegistryQt::insertValueMultiSZ( HKEY_LOCAL_MACHINE, TestSubkey + "Børachio\\测试", "øresund测试", list);
+        RegValue value = RegistryQt::value( HKEY_LOCAL_MACHINE, TestSubkey + "Børachio\\测试", "øresund测试");
 
         check( tests_okay, tests_fail, description, (list == value.toStringList()), okay);
     }
@@ -68,8 +67,8 @@ static void RunTests()
         QString description = "QString with unicode letters in key, valueName and value";
 
         QString toSave = "测试alabama";
-        bool okay = registry.insertValueSZ( HKEY_LOCAL_MACHINE, keysRoot + "Mustar测试\\测试dæåp", "测试", toSave);
-        RegValue value = registry.getValue( HKEY_LOCAL_MACHINE, keysRoot + "Mustar测试\\测试dæåp", "测试");
+        bool okay = RegistryQt::insertValueSZ( HKEY_LOCAL_MACHINE, TestSubkey + "Mustar测试\\测试dæåp", "测试", toSave);
+        RegValue value = RegistryQt::value( HKEY_LOCAL_MACHINE, TestSubkey + "Mustar测试\\测试dæåp", "测试");
 
         check( tests_okay, tests_fail, description, (toSave == value.toString()), okay);
     }
@@ -78,8 +77,8 @@ static void RunTests()
         QString description = "QString to valueExpandSz";
 
         QString toSave = "LOL";
-        bool okay = registry.insertValueExpandSZ( HKEY_LOCAL_MACHINE, keysRoot, "bland", toSave);
-        RegValue value = registry.getValue( HKEY_LOCAL_MACHINE, keysRoot, "bland");
+        bool okay = RegistryQt::insertValueExpandSZ( HKEY_LOCAL_MACHINE, TestSubkey, "bland", toSave);
+        RegValue value = RegistryQt::value( HKEY_LOCAL_MACHINE, TestSubkey, "bland");
         check( tests_okay, tests_fail, description, (toSave == value.toString()), okay);
     }
 
@@ -87,8 +86,8 @@ static void RunTests()
         QString description = "DWORD";
 
         DWORD toSave = 1561;
-        bool okay = registry.insertValueDWORD( HKEY_LOCAL_MACHINE, keysRoot, "blandf\\asdf", toSave);
-        RegValue value = registry.getValue( HKEY_LOCAL_MACHINE, keysRoot, "blandf\\asdf");
+        bool okay = RegistryQt::insertValueDWORD( HKEY_LOCAL_MACHINE, TestSubkey, "blandf\\asdf", toSave);
+        RegValue value = RegistryQt::value( HKEY_LOCAL_MACHINE, TestSubkey, "blandf\\asdf");
         if (!check( tests_okay, tests_fail, description, (toSave == value.toDword()), okay))
             qDebug() << "should have:" << toSave << " but got:" << value.toDword();
     }
@@ -97,18 +96,80 @@ static void RunTests()
         QString description = "QWORD";
 
         QWORD toSave = 1565465448948976866;
-        bool okay = registry.insertValueQWORD( HKEY_LOCAL_MACHINE, keysRoot, "blandf\\g/ohome", toSave);
-        RegValue value = registry.getValue( HKEY_LOCAL_MACHINE, keysRoot, "blandf\\g/ohome");
+        bool okay = RegistryQt::insertValueQWORD( HKEY_LOCAL_MACHINE, TestSubkey, "blandf\\g/ohome", toSave);
+        RegValue value = RegistryQt::value( HKEY_LOCAL_MACHINE, TestSubkey, "blandf\\g/ohome");
         if (!check( tests_okay, tests_fail, description, (toSave == value.toQword()), okay))
             qDebug() << "should have:" << toSave << " but got:" << value.toQword();
     }
 
     {
-        QString description = "Insert key / key exists";
+        QString description = "Get value names";
 
-        registry.insertKey( HKEY_LOCAL_MACHINE, keysRoot + "bananas\\øzebra");
+        QStringList getList = RegistryQt::valueNames( HKEY_LOCAL_MACHINE, TestSubkey );
+        QStringList correctList = {"bland", "blandf\\asdf", "blandf\\g/ohome", "great"};
+        bool okay = (getList == correctList);
 
-        //RegValue value = registry.getValue( HKEY_LOCAL_MACHINE, keysRoot, "blandf\\gohome");
+        check( tests_okay, tests_fail, description, okay);
+    }
+
+    {
+        QString description = "Value exists positive";
+
+        bool okay = RegistryQt::valueExists( HKEY_LOCAL_MACHINE, TestSubkey, "great");
+
+        check( tests_okay, tests_fail, description, okay);
+    }
+
+    {
+        QString description = "Value exists negative";
+
+        bool exists = RegistryQt::valueExists( HKEY_LOCAL_MACHINE, TestSubkey, "grea");
+
+        check( tests_okay, tests_fail, description, exists == false);
+    }
+
+    {
+        QString description = "Key exists positive 1";
+
+        bool exists = RegistryQt::keyExists( HKEY_LOCAL_MACHINE, TestSubkey);
+
+        check( tests_okay, tests_fail, description, exists);
+    }
+
+    {
+        QString description = "Key exists positive 2";
+
+        bool exists = RegistryQt::keyExists( HKEY_LOCAL_MACHINE, "SOFTWARE");
+
+        check( tests_okay, tests_fail, description, exists);
+    }
+
+    {
+        QString description = "Key exists negative 1";
+
+        bool exists = RegistryQt::keyExists( HKEY_LOCAL_MACHINE, TestSubkey + "\\great");
+
+        check( tests_okay, tests_fail, description, exists == false);
+    }
+
+    {
+        QString description = "Key exists negative 2";
+
+        bool exists = RegistryQt::keyExists( HKEY_LOCAL_MACHINE, "SOFTWAR");
+
+        check( tests_okay, tests_fail, description, exists == false);
+    }
+
+    {
+        QString description = "Remove test";
+
+        RegistryQt::removeKey( HKEY_LOCAL_MACHINE, TestSubkey);
+
+        // check( tests_okay, tests_fail, description, okay == false);
+
+        bool exists = RegistryQt::keyExists( HKEY_LOCAL_MACHINE, TestSubkey);
+
+        check( tests_okay, tests_fail, description, exists == false);
     }
 
     qDebug() << "";
