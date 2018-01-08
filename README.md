@@ -1,5 +1,5 @@
 # RegistryQt
-This library allows you to perform several Windows Registry operations.<br>
+This library allows you to perform several Windows Registry operations in Qt.<br>
 You can use these functions with QString and other typical Qt data types as arguments.
 
 How to get started:<br>
