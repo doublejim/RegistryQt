@@ -92,6 +92,7 @@ static void RunTests()
             qDebug() << "should have:" << toSave << " but got:" << value.toDword();
     }
 
+    #ifdef Q_PROCESSOR_X86_64
     {
         QString description = "QWORD";
 
@@ -101,6 +102,12 @@ static void RunTests()
         if (!check( tests_okay, tests_fail, description, (toSave == value.toQword()), okay))
             qDebug() << "should have:" << toSave << " but got:" << value.toQword();
     }
+    #else
+    {
+        DWORD toSave = 1565465447;
+        RegistryQt::insertValueDWORD( HKEY_LOCAL_MACHINE, TestSubkey, "blandf\\g/ohome", toSave);
+    }
+    #endif
 
     {
         QString description = "Get value names";
@@ -108,7 +115,6 @@ static void RunTests()
         QStringList getList = RegistryQt::valueNames( HKEY_LOCAL_MACHINE, TestSubkey );
         QStringList correctList = {"bland", "blandf\\asdf", "blandf\\g/ohome", "great"};
         bool okay = (getList == correctList);
-
         check( tests_okay, tests_fail, description, okay);
     }
 

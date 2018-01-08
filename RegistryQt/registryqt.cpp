@@ -82,10 +82,12 @@ bool RegistryQt::insertValueDWORD(const HKEY rootKey, const QString subkey, cons
     return insertValue( rootKey, subkey, valueName, (const BYTE*) &value, REG_DWORD, sizeof(DWORD));
 }
 
+#ifdef Q_PROCESSOR_X86_64
 bool RegistryQt::insertValueQWORD(const HKEY rootKey, const QString subkey, const QString valueName, const QWORD& value)
 {
     return insertValue( rootKey, subkey, valueName, (const BYTE*) &value, REG_QWORD, sizeof(QWORD));
 }
+#endif
 
 bool RegistryQt::insertValueSZ(const HKEY rootKey, const QString subkey, const QString valueName, const QString& value)
 {
