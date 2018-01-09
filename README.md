@@ -74,9 +74,21 @@ RegValue regValue = RegistryQt::getValue( HKEY_LOCAL_MACHINE, "Software\\1337-te
 qDebug() << (regValue.type == REG_DWORD);
 qDebug() << regValue.toDword();
 ```
-
 ### Result ###
 
 Qt prints out: true<br>
 56456
 
+## Example 5: Expandable strings ##
+```c++
+RegistryQt::insertValueExpandSZ(HKEY_LOCAL_MACHINE, "Software\\1-test", "test", "%windir%");
+RegValue value = RegistryQt::value(HKEY_LOCAL_MACHINE, "Software\\1-test", "test");
+qDebug() << "expanded:" << value.toExpandedString();
+qDebug() << "as string:" << value.toString();
+```
+### Result ###
+
+Qt prints out:<br>
+expanded: "C:\\Windows"<br>
+as string: "%windir%"<br>
+You could as well store an expandable string in a regular reg_sz, and expand that, but that would defeat the purpose of having the reg_expand_sz type.
