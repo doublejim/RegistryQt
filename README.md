@@ -9,7 +9,7 @@ How to get started:<br>
 
 ## FEATURES ##
 
-• Read/Write all basic types of Registry values: Binary, DWORD, ~~ExpandSZ~~(working on it), MultiSZ, QWORD, SZ.<br>
+• Read/Write all basic types of Registry values: Binary, DWORD, ExpandSZ, MultiSZ, QWORD, SZ.<br>
 • Use basic Qt data types as input: QByteArray, QString, QStringList.<br>
 • Delete a key and all of its subkeys.<br>
 • Easily convert a read value to a Qt data type.<br>
@@ -20,7 +20,7 @@ How to get started:<br>
 • ~~Some functions and variables should probably be renamed.~~ it's looking pretty snazzy now<br>
 • Maybe I want a RegOperation struct that contains information on an attempted operation. (probably not)<br>
 • Make sure that it compiles and works on Windows XP, Windows 7, Windows 8.1, Windows 10.<br>
-• Do so that Expandable String values are easily expanded.<br>
+• ~~Do so that Expandable String values are easily expanded.~~ done<br>
 • More tests?<br>
 • ~~I want "keyExists()" and "valueExists()" functions.~~ done<br>
 • ~~I want to be able to get a list of all valueNames in a key.~~ done<br>
