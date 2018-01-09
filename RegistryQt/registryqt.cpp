@@ -137,7 +137,7 @@ RegValue RegistryQt::value(const HKEY rootKey, const QString subkey, const QStri
         {
         case ERROR_MORE_DATA:           // The 255 bytes aren't enough. Allocate the necessary amount.
         {
-            delete data;
+            delete[] data;
             data = new BYTE[cbData];
             retCode = RegQueryValueEx( hKey, (LPCWSTR) valueName.utf16(), 0, &type, data, &cbData);
         }

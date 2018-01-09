@@ -11,5 +11,6 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     RunTests();
+
     return 0;
 }

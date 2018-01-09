@@ -9,7 +9,7 @@ RegValue::RegValue(){}
 
 RegValue::~RegValue()
 {
-    delete data;
+    delete[] data;
     data = nullptr;
 }
 
@@ -25,7 +25,7 @@ RegValue::RegValue(DWORD errorCode, BYTE *source, DWORD size, DWORD type)
     for (uint i = 0; i < size; ++i)
         data[i] = source[i];
 
-    delete source;
+    delete[] source;
     source = nullptr;
 
     this->type = type;
@@ -34,6 +34,26 @@ RegValue::RegValue(DWORD errorCode, BYTE *source, DWORD size, DWORD type)
 QString RegValue::toString()
 {
     return QString::fromWCharArray( (wchar_t*) data);
+}
+
+QString RegValue::toExpandedString()
+{
+    wchar_t* unexpandedString = (wchar_t*) data;
+    TCHAR expandedString[MAX_KEY_LENGTH];
+
+    DWORD requiredSize = ExpandEnvironmentStrings( unexpandedString, expandedString, MAX_KEY_LENGTH);
+
+    if (requiredSize < MAX_KEY_LENGTH)
+    {
+        return QString::fromWCharArray( (wchar_t*) expandedString);
+    } else {
+        TCHAR* expandedStringLarger = new TCHAR[requiredSize];
+        ExpandEnvironmentStrings( unexpandedString, expandedStringLarger, requiredSize);
+        QString result = QString::fromWCharArray( (wchar_t*) expandedStringLarger);
+        delete[] expandedStringLarger;
+        expandedStringLarger = nullptr;
+        return result;
+    }
 }
 
 QStringList RegValue::toStringList()

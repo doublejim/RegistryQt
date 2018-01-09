@@ -6,6 +6,9 @@
  * This file is released under the MIT license.
  */
 
+#define MAX_KEY_LENGTH 255
+#define MAX_VALUE_NAME 16383
+
 #include <qt_windows.h>
 #include <QString>
 #include <QStringList>
@@ -26,6 +29,7 @@ struct RegValue {
     ~RegValue();
     RegValue( DWORD errorCode, BYTE* source, DWORD size, DWORD type);
     QString toString();
+    QString toExpandedString();
     QStringList toStringList();
     DWORD toDword();
     QWORD toQword();

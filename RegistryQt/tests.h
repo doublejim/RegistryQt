@@ -167,18 +167,44 @@ static void RunTests()
     }
 
     {
+        QString description = "Expand sz test 1";
+
+        RegistryQt::insertValueExpandSZ(HKEY_LOCAL_MACHINE, TestSubkey + "\\1A", "checkerBoy", "%windir%\\gruesome_test\\%homedrive%");
+        RegValue value = RegistryQt::value(HKEY_LOCAL_MACHINE, TestSubkey + "\\1A", "checkerBoy");
+
+        // Assuming the windir is C:\Windows
+
+        bool okayA = value.toExpandedString() == "C:\\Windows\\gruesome_test\\C:";
+        bool okayB = value.toString() == "%windir%\\gruesome_test\\%homedrive%";
+
+        check( tests_okay, tests_fail, description, okayA && okayB);
+    }
+
+    {
+        QString description = "Expand sz test 2";
+
+        // This is long enough to be expanded to a size of more than 255.
+        QString longstr = QString("%windir%").repeated(26);
+
+        RegistryQt::insertValueExpandSZ(HKEY_LOCAL_MACHINE, TestSubkey + "\\1A", "checkerBoy", longstr);
+        RegValue value = RegistryQt::value(HKEY_LOCAL_MACHINE, TestSubkey + "\\1A", "checkerBoy");
+
+        // Assuming the windir is C:\Windows
+
+        QString expandedstr = QString("C:\\Windows").repeated(26);
+        bool okay = expandedstr == value.toExpandedString();
+
+        check( tests_okay, tests_fail, description, okay);
+    }
+
+    {
         QString description = "Remove test";
-
         RegistryQt::removeKey( HKEY_LOCAL_MACHINE, TestSubkey);
-
-        // check( tests_okay, tests_fail, description, okay == false);
-
         bool exists = RegistryQt::keyExists( HKEY_LOCAL_MACHINE, TestSubkey);
 
         check( tests_okay, tests_fail, description, exists == false);
     }
 
-    qDebug() << "";
     qDebug() << "tests succeeded:" << tests_okay;
     qDebug() << "tests failed:   " << tests_fail;
 }
