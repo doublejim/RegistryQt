@@ -91,8 +91,7 @@ bool RegistryQt::insertValueQWORD(const HKEY rootKey, const QString subkey, cons
 
 bool RegistryQt::insertValueSZ(const HKEY rootKey, const QString subkey, const QString valueName, const QString& value)
 {
-    wchar_t* castVal = (wchar_t*) value.utf16();
-    return insertValue( rootKey, subkey, valueName, (const BYTE*) castVal, REG_SZ, value.size() * sizeof(wchar_t));
+    return insertValue( rootKey, subkey, valueName, (const BYTE*) value.utf16(), REG_SZ, value.size() * sizeof(ushort));
 }
 
 bool RegistryQt::insertValueMultiSZ(const HKEY rootKey, const QString subkey, const QString valueName, const QStringList &value)
@@ -103,14 +102,12 @@ bool RegistryQt::insertValueMultiSZ(const HKEY rootKey, const QString subkey, co
         combinedData.append( str + QChar('\0'));
     combinedData.append(QChar('\0'));
 
-    wchar_t* castVal = (wchar_t*) combinedData.utf16();
-    return insertValue( rootKey, subkey, valueName, (const BYTE*) castVal, REG_MULTI_SZ, combinedData.size() * sizeof(wchar_t));
+    return insertValue( rootKey, subkey, valueName, (const BYTE*) combinedData.utf16(), REG_MULTI_SZ, combinedData.size() * sizeof(ushort));
 }
 
 bool RegistryQt::insertValueExpandSZ(const HKEY rootKey, const QString subkey, const QString valueName, const QString& value)
 {
-    wchar_t* castVal = (wchar_t*) value.utf16();
-    return insertValue( rootKey, subkey, valueName, (const BYTE*) castVal, REG_EXPAND_SZ, value.size() * sizeof(wchar_t));
+    return insertValue( rootKey, subkey, valueName, (const BYTE*) value.utf16(), REG_EXPAND_SZ, value.size() * sizeof(ushort));
 }
 
 bool RegistryQt::insertValueBinary( const HKEY rootKey, const QString subkey, const QString valueName, const QByteArray& value)
