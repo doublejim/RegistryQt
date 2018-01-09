@@ -9,11 +9,14 @@ How to get started:<br>
 
 ## FEATURES ##
 
-• Read/Write all basic types of Registry values: Binary, DWORD, ExpandSZ, MultiSZ, QWORD, SZ.<br>
-• Use basic Qt data types as input: QByteArray, QString, QStringList.<br>
-• Delete a key and all of its subkeys.<br>
+• Read/Write all types of Registry values: Binary, DWORD, ExpandSZ, MultiSZ, QWORD, SZ.<br>
+• Use the Qt data types you know and love: QByteArray, QString, QStringList.<br>
 • Easily convert a read value to a Qt data type.<br>
-• Also works with chinese characters, \ and /.
+• Delete a Registry key and all of its subkeys.<br>
+• Expand both expandable and non-expandable strings!<br>
+• Value names are allowed to contain both \ and /.<br>
+• Keys are allowed to contain /.<br>
+• Keys, value names and values are allowed to contain for instance Japanese or Chinese characters.
 
 ## THINGS IN THE WORKS ##
 • I am not certain that all errors are handled correctly.<br>
